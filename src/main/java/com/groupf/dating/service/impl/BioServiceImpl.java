@@ -6,7 +6,6 @@ import com.groupf.dating.dto.BioRewriteResponse;
 import com.groupf.dating.service.BioService;
 import com.groupf.dating.service.ClaudeApiService;
 import com.groupf.dating.util.PromptBuilder;
-import com.groupf.dating.util.ValidationUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,12 +24,6 @@ public class BioServiceImpl implements BioService {
 
     @Override
     public BioRewriteResponse rewriteBio(BioRewriteRequest request) {
-        // Validate input
-        String validationError = ValidationUtil.getBioValidationError(request.getBio());
-        if (validationError != null) {
-            throw new IllegalArgumentException(validationError);
-        }
-
         ToneType tone = ToneType.fromString(request.getTone());
 
         String systemPrompt = PromptBuilder.buildBioRewriteSystemPrompt(tone);

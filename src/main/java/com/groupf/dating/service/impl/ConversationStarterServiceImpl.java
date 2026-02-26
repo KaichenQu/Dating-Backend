@@ -6,7 +6,6 @@ import com.groupf.dating.dto.ConversationStarterResponse;
 import com.groupf.dating.service.ClaudeApiService;
 import com.groupf.dating.service.ConversationStarterService;
 import com.groupf.dating.util.PromptBuilder;
-import com.groupf.dating.util.ValidationUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,12 +24,6 @@ public class ConversationStarterServiceImpl implements ConversationStarterServic
 
     @Override
     public ConversationStarterResponse generateStarters(ConversationStarterRequest request) {
-        // Validate input
-        String validationError = ValidationUtil.getBioValidationError(request.getBio());
-        if (validationError != null) {
-            throw new IllegalArgumentException(validationError);
-        }
-
         ToneType tone = ToneType.fromString(request.getTone());
 
         String systemPrompt = PromptBuilder.buildConversationStarterSystemPrompt(tone);
