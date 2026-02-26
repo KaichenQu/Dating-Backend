@@ -10,7 +10,7 @@ public class ApiConstants {
     public static final double TEMPERATURE = 0.7;
 
     // Timeouts
-    public static final int API_TIMEOUT_SECONDS = 15;
+    public static final int API_TIMEOUT_SECONDS = 30;
     public static final int CONNECTION_TIMEOUT_SECONDS = 10;
 
     // Headers
