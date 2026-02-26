@@ -20,6 +20,6 @@ public class ApiConstants {
     public static final String MEDIA_TYPE_JSON = "application/json";
 
     private ApiConstants() {
-        // Prevent instantiation
+        throw new UnsupportedOperationException("This cannot be instantiated");
     }
 }
