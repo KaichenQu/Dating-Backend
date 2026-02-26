@@ -77,6 +77,7 @@
 		<dependency>
 			<groupId>org.springframework.retry</groupId>
 			<artifactId>spring-retry</artifactId>
+			<version>2.0.11</version>
 		</dependency>
 
 		<!-- Spring AOP (required for @Retryable annotation) -->
