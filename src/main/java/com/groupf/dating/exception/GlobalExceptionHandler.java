@@ -41,9 +41,9 @@ public class GlobalExceptionHandler {
     /**
      * Handle business exceptions
      */
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ErrorResponse> handleBusinessException(
-            BusinessException ex, WebRequest request) {
+    @ExceptionHandler(IException.class)
+    public ResponseEntity<ErrorResponse> handleIException(
+            IException ex, WebRequest request) {
         ErrorCode errorCode = ex.getErrorCode();
         log.warn("Business error [{}]: {}", errorCode.getCode(), ex.getMessage());
 

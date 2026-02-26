@@ -19,14 +19,14 @@ public enum ToneType {
     }
 
     public static ToneType fromString(String value) {
-        if (value == null) {
+        if (value == null || value.isEmpty()) {
             return CASUAL; // Default
         }
         for (ToneType tone : ToneType.values()) {
-            if (tone.value.equalsIgnoreCase(value)) {
+            if (tone.value.equalsIgnoreCase(value.trim())) {
                 return tone;
             }
         }
-        return CASUAL;
+        throw new IllegalArgumentException(value + " is not a valid ToneType, Acceptable values are: casual, professional, bold, polite, concise");
     }
 }
