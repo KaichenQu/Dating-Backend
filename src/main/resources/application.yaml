@@ -3,9 +3,8 @@ spring:
     name: dating
 
   # MongoDB Configuration
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/dating-optimizer
+  mongodb:
+    uri: ${MONGODB_URI:mongodb+srv://kelson:kelsonqu@dating-optimizer.wucdgxj.mongodb.net/dating_optimizer?retryWrites=true&w=majority}
       # For production (Heroku with MongoDB Atlas):
       # uri: ${MONGODB_URI}
 
