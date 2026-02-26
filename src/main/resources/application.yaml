@@ -4,7 +4,7 @@ spring:
 
   # MongoDB Configuration
   mongodb:
-    uri: ${MONGODB_URI:mongodb+srv://kelson:kelsonqu@dating-optimizer.wucdgxj.mongodb.net/dating_optimizer?retryWrites=true&w=majority}
+    uri: ${MONGODB_URI}
       # For production (Heroku with MongoDB Atlas):
       # uri: ${MONGODB_URI}
 
