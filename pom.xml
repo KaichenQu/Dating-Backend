@@ -86,6 +86,13 @@
 			<artifactId>spring-aop</artifactId>
 		</dependency>
 
+		<!-- Dotenv - load .env file into Spring environment -->
+		<dependency>
+			<groupId>me.paulschwarz</groupId>
+			<artifactId>spring-dotenv</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
