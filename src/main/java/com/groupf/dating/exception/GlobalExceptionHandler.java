@@ -4,6 +4,7 @@ import com.groupf.dating.dto.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.ExhaustedRetryException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -15,6 +16,25 @@ import java.time.LocalDateTime;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    /**
+     * Unwrap Spring Retry's ExhaustedRetryException and re-handle the real cause
+     */
+    @ExceptionHandler(ExhaustedRetryException.class)
+    public ResponseEntity<ErrorResponse> handleExhaustedRetryException(
+            ExhaustedRetryException ex, WebRequest request) {
+        Throwable cause = ex.getCause();
+        if (cause instanceof ClaudeApiException claudeEx) {
+            return handleClaudeApiException(claudeEx, request);
+        }
+        if (cause instanceof IException iEx) {
+            return handleIException(iEx, request);
+        }
+        if (cause instanceof RuntimeException rEx) {
+            return handleRuntimeException(rEx, request);
+        }
+        return handleGeneralException(ex, request);
+    }
 
     /**
      * Handle Claude API exceptions
