@@ -2,11 +2,12 @@ spring:
   application:
     name: dating
 
+  config:
+    import: "optional:file:.env[.properties]"
+
   # MongoDB Configuration
   mongodb:
-    uri: ${MONGODB_URI}
-      # For production (Heroku with MongoDB Atlas):
-      # uri: ${MONGODB_URI}
+    uri: ${MONGODB_URI:mongodb://localhost:27017/dating-optimizer}
 
   # File Upload Configuration
   servlet:
