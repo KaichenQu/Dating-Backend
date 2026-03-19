@@ -25,14 +25,13 @@ jobs:
       - name: Run tests
         run: ./mvnw test --no-transfer-progress
         env:
-          # Supabase / DB — set these in GitHub repo Settings → Secrets → Actions
-          DB_URL: ${{ secrets.DB_URL }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          SUPABASE_JWT_ISSUER_URI: ${{ secrets.SUPABASE_JWT_ISSUER_URI }}
-          # Claude API
+          # Must match the ${VAR} names used in application.yaml exactly
+          SUPABASE_DB_JDBC_URL: ${{ secrets.SUPABASE_DB_JDBC_URL }}
+          SUPABASE_DB_USERNAME: ${{ secrets.SUPABASE_DB_USERNAME }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_JWT_SECRET: ${{ secrets.SUPABASE_JWT_SECRET }}
           CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
-          # CORS
           ALLOWED_ORIGINS: http://localhost:3000
 
       - name: Upload test report
