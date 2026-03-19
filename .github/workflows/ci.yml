@@ -1,0 +1,44 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run tests
+        run: ./mvnw test --no-transfer-progress
+        env:
+          # Supabase / DB — set these in GitHub repo Settings → Secrets → Actions
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          SUPABASE_JWT_ISSUER_URI: ${{ secrets.SUPABASE_JWT_ISSUER_URI }}
+          # Claude API
+          CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+          # CORS
+          ALLOWED_ORIGINS: http://localhost:3000
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: target/surefire-reports/
+          retention-days: 7
