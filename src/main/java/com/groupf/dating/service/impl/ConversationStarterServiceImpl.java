@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -38,14 +40,16 @@ public class ConversationStarterServiceImpl implements ConversationStarterServic
         ConversationStarterResponse result = parseConversationStarters(response, request.getBio(), tone.getValue());
         log.info("Successfully generated {} conversation starters", result.getStarters().size());
 
-        saveToDatabase(request.getBio(), tone.getValue(), result.getStarters());
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        saveToDatabase(request.getBio(), tone.getValue(), result.getStarters(), userId);
 
         return result;
     }
 
-    private void saveToDatabase(String bio, String tone, java.util.List<String> starters) {
+    private void saveToDatabase(String bio, String tone, java.util.List<String> starters, String userId) {
         try {
             ProfileOptimizationRequest entity = new ProfileOptimizationRequest();
+            entity.setUserId(userId);
             entity.setOriginalBio(bio);
             entity.setTonePreference(tone);
             entity.setConversationStarters(starters);
