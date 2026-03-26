@@ -31,17 +31,18 @@ public class ConversationStarterServiceImpl implements ConversationStarterServic
     public ConversationStarterResponse generateStarters(ConversationStarterRequest request) {
         ToneType tone = ToneType.fromString(request.getTone());
 
+        String bio = request.getBio().trim();
         String systemPrompt = PromptBuilder.buildConversationStarterSystemPrompt(tone);
-        String userPrompt = PromptBuilder.buildConversationStarterUserPrompt(request.getBio());
+        String userPrompt = PromptBuilder.buildConversationStarterUserPrompt(bio);
 
         log.info("Generating conversation starters with tone: {}", tone.getValue());
 
         String response = claudeApiService.callClaudeApi(systemPrompt, userPrompt);
-        ConversationStarterResponse result = parseConversationStarters(response, request.getBio(), tone.getValue());
+        ConversationStarterResponse result = parseConversationStarters(response, bio, tone.getValue());
         log.info("Successfully generated {} conversation starters", result.getStarters().size());
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        saveToDatabase(request.getBio(), tone.getValue(), result.getStarters(), userId);
+        saveToDatabase(bio, tone.getValue(), result.getStarters(), userId);
 
         return result;
     }

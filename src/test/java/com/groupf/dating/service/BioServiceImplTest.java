@@ -103,6 +103,17 @@ class BioServiceImplTest {
     }
 
     @Test
+    void rewriteBio_trimsBioWhitespace_beforeProcessing() {
+        String claudeResponse = "1. Bio one.\n2. Bio two.\n3. Bio three.";
+        when(claudeApiService.callClaudeApi(anyString(), anyString())).thenReturn(claudeResponse);
+
+        BioRewriteRequest request = new BioRewriteRequest("  I love hiking and coding.  ", "casual");
+        BioRewriteResponse response = bioService.rewriteBio(request);
+
+        assertThat(response.getOriginalBio()).isEqualTo("I love hiking and coding.");
+    }
+
+    @Test
     void rewriteBio_savesToDatabaseWithCorrectUserId() {
         String claudeResponse = "1. One.\n2. Two.\n3. Three.";
         when(claudeApiService.callClaudeApi(anyString(), anyString())).thenReturn(claudeResponse);

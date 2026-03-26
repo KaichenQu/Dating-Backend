@@ -31,17 +31,18 @@ public class BioServiceImpl implements BioService {
     public BioRewriteResponse rewriteBio(BioRewriteRequest request) {
         ToneType tone = ToneType.fromString(request.getTone());
 
+        String bio = request.getBio().trim();
         String systemPrompt = PromptBuilder.buildBioRewriteSystemPrompt(tone);
-        String userPrompt = PromptBuilder.buildBioRewriteUserPrompt(request.getBio());
+        String userPrompt = PromptBuilder.buildBioRewriteUserPrompt(bio);
 
         log.info("Rewriting bio with tone: {}", tone.getValue());
 
         String response = claudeApiService.callClaudeApi(systemPrompt, userPrompt);
-        BioRewriteResponse result = parseRewrittenBios(response, request.getBio(), tone.getValue());
+        BioRewriteResponse result = parseRewrittenBios(response, bio, tone.getValue());
         log.info("Successfully generated {} bio rewrites", result.getRewrittenBios().size());
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        saveToDatabase(request.getBio(), tone.getValue(), result.getRewrittenBios(), userId);
+        saveToDatabase(bio, tone.getValue(), result.getRewrittenBios(), userId);
 
         return result;
     }
